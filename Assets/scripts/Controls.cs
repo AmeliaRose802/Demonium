@@ -17,7 +17,10 @@ public class Controls : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        float h = Input.GetAxis("Horizontal");
+        float amountToMove = Input.GetAxisRaw("Horizontal") * moveSpeed * Time.deltaTime;
+
+        transform.Translate(Vector3.right * amountToMove);
+
         //grounded = Physics2D.Linecast(transform.position, groundCheck.position, 1 << LayerMask.NameToLayer("Ground"));
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -37,16 +40,16 @@ public class Controls : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
             rb.velocity = new Vector2(moveSpeed, rb.velocity.y);
-        }*/
+        }
         if (Input.GetKeyDown(KeyCode.LeftArrow)){
             rb.velocity = new Vector2(-moveSpeed, rb.velocity.y);
         }
         if(Input.GetKeyDown(KeyCode.RightArrow)){
             rb.velocity = new Vector2(moveSpeed, rb.velocity.y);
-        }
+        }*/
 
-        
-	}
+
+    }
 
     //This should dect collisoons with ground and reset jump count to prevent double jumping
     void OnCollisionEnter2D(Collision2D coll)
