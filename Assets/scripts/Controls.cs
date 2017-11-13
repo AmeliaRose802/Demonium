@@ -8,8 +8,10 @@ public class Controls : MonoBehaviour {
     //public float moveForce = 365f;
     public float moveSpeed = 10;
     public int jumpsAllowed = 2;
+    [HideInInspector] public bool facingLeft = false;
     //private bool grounded = true;
     [HideInInspector] public int jumpCount = 0;
+    [HideInInspector] public static bool playerFacingLeft = false;
     // Use this for initialization
     void Start () {
         rb = GetComponent<Rigidbody2D>();
@@ -18,6 +20,22 @@ public class Controls : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         float amountToMove = Input.GetAxisRaw("Horizontal") * moveSpeed * Time.deltaTime;
+
+        //TODO fix this shit so player will face the derection that it is shooting
+        if ((amountToMove < 0) && !playerFacingLeft)
+        {
+            Vector3 flip = gameObject.transform.localScale;
+            flip.x *= -1;
+            gameObject.transform.localScale = flip;
+            playerFacingLeft = true;
+        }
+        if(amountToMove > 0 && playerFacingLeft)
+        {
+            Vector3 flip = gameObject.transform.localScale;
+            flip.x *= -1;
+            gameObject.transform.localScale = flip;
+            playerFacingLeft = false;
+        }
 
         transform.Translate(Vector3.right * amountToMove);
 
@@ -32,21 +50,6 @@ public class Controls : MonoBehaviour {
                 jumpCount++;
             }
         }
-        /*
-        if (Input.GetButton("RIGHT"))
-        {
-            rb.velocity = new Vector2(-moveSpeed, rb.velocity.y);
-        }
-        if (Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            rb.velocity = new Vector2(moveSpeed, rb.velocity.y);
-        }
-        if (Input.GetKeyDown(KeyCode.LeftArrow)){
-            rb.velocity = new Vector2(-moveSpeed, rb.velocity.y);
-        }
-        if(Input.GetKeyDown(KeyCode.RightArrow)){
-            rb.velocity = new Vector2(moveSpeed, rb.velocity.y);
-        }*/
 
 
     }
