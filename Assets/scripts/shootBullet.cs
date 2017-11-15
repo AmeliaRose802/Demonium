@@ -11,6 +11,7 @@ public class shootBullet : MonoBehaviour {
     private void Start()
     {
         projectile = ice;
+        anim = GetComponent<Animator>();
     }
 
     public float shootSpeed = 10f;
@@ -18,8 +19,16 @@ public class shootBullet : MonoBehaviour {
     public float bulletYModifier = .5f;
     [HideInInspector] public Vector3 spawnSpot;
     [HideInInspector] public static bool playerFacingLeft = false;
+    Animator anim;
+    int i = 0;
+
     // Update is called once per frame
     void Update () {
+        if (i > 10)
+        {
+            anim.SetBool("contShooting", false);
+            i = 0;
+        }
         /*
         if (playerFacingLeft)
         {
@@ -44,6 +53,9 @@ public class shootBullet : MonoBehaviour {
 
         if (Input.GetButtonDown("Fire1"))
         {
+            anim.SetBool("isShooting", true);
+            anim.SetBool("contShooting", true);
+            i++;
             /*
             if (!playerFacingLeft && !(shootBullet.playerFacingLeft))
             {
@@ -68,11 +80,11 @@ public class shootBullet : MonoBehaviour {
             newScale.x *= -1;
             clone.transform.localScale = newScale;
 
-        }
-
-        
-        if (Input.GetButtonDown("Fire2"))
+        } else if (Input.GetButtonDown("Fire2"))
         {
+            anim.SetBool("isShooting", true);
+            anim.SetBool("contShooting", true);
+            i++;
 
             /*
             if (playerFacingLeft && (shootBullet.playerFacingLeft))
@@ -82,7 +94,7 @@ public class shootBullet : MonoBehaviour {
                 gameObject.transform.localScale = flip;
                 playerFacingLeft = false;
             }*/
-            
+
 
             // Instantiate the projectile at the position and rotation of this transform
             GameObject clone = Instantiate(projectile, spawnSpot, transform.rotation) as GameObject;
@@ -90,7 +102,12 @@ public class shootBullet : MonoBehaviour {
             //clone.GetComponent<Rigidbody2D>().AddForce(transform.right * 199);
 
         }
+        else
+        {
+            anim.SetBool("isShooting", false);
+        }
 
+        i++;
         
        
 

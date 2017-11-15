@@ -12,9 +12,12 @@ public class Controls : MonoBehaviour {
     //private bool grounded = true;
     [HideInInspector] public int jumpCount = 0;
     [HideInInspector] public static bool playerFacingLeft = false;
+    Animator anim;
+
     // Use this for initialization
     void Start () {
         rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
     }
 	
 	// Update is called once per frame
@@ -35,6 +38,15 @@ public class Controls : MonoBehaviour {
             flip.x *= -1;
             gameObject.transform.localScale = flip;
             playerFacingLeft = false;
+        }
+
+        if(amountToMove != 0)
+        {
+            anim.SetBool("isWalking", true);
+        }
+        else
+        {
+            anim.SetBool("isWalking", false);
         }
 
         transform.Translate(Vector3.right * amountToMove);
