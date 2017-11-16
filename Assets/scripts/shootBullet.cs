@@ -13,7 +13,8 @@ public class shootBullet : MonoBehaviour {
         projectile = ice;
         anim = GetComponent<Animator>();
     }
-
+    float x;
+    float y;
     public float shootSpeed = 10f;
     public float bulletXModifier = .7f;
     public float bulletYModifier = .5f;
@@ -45,15 +46,15 @@ public class shootBullet : MonoBehaviour {
             projectile = ice;
         }
 
-        float x = transform.position.x + bulletXModifier;
-        float y = (transform.position.y + bulletYModifier);
+        x = transform.position.x + bulletXModifier;
+        y = (transform.position.y + bulletYModifier);
         spawnSpot = new Vector3(x, y);
         //spawnSpot = new Vector3(0, 0);
         // Ctrl was pressed, launch a projectile
 
         if (Input.GetButtonDown("Fire1"))
         {
-            anim.SetBool("isShooting", true);
+            anim.SetBool("shootLeft", true);
             anim.SetBool("contShooting", true);
             i++;
             /*
@@ -67,25 +68,26 @@ public class shootBullet : MonoBehaviour {
             */
 
             playerFacingLeft = true;
-            x = transform.position.x - bulletXModifier;
-            y = (transform.position.y - bulletYModifier);
-            spawnSpot = new Vector3(x, y);
+            
+            StartCoroutine(shootRight());
 
-            // Instantiate the projectile at the position and rotation of this transform
-            GameObject clone = Instantiate(projectile, spawnSpot, transform.rotation) as GameObject;
-            clone.GetComponent<Rigidbody2D>().velocity = new Vector2(-shootSpeed, GetComponent<Rigidbody2D>().velocity.y);
+            //yield return new WaitForSeconds(5);
+
             //clone.GetComponent<Rigidbody2D>().AddForce(transform.right * 199);
 
+            /*
             Vector3 newScale = clone.transform.localScale;
             newScale.x *= -1;
             clone.transform.localScale = newScale;
+            */
 
-        } else if (Input.GetButtonDown("Fire2"))
+        }
+        else if (Input.GetButtonDown("Fire2"))
         {
             anim.SetBool("isShooting", true);
             anim.SetBool("contShooting", true);
             i++;
-
+            // yield return new WaitForSeconds(5);
             /*
             if (playerFacingLeft && (shootBullet.playerFacingLeft))
             {
@@ -95,16 +97,14 @@ public class shootBullet : MonoBehaviour {
                 playerFacingLeft = false;
             }*/
 
+            StartCoroutine(shootLeft());
 
-            // Instantiate the projectile at the position and rotation of this transform
-            GameObject clone = Instantiate(projectile, spawnSpot, transform.rotation) as GameObject;
-            clone.GetComponent<Rigidbody2D>().velocity = new Vector2(shootSpeed, GetComponent<Rigidbody2D>().velocity.y);
-            //clone.GetComponent<Rigidbody2D>().AddForce(transform.right * 199);
 
         }
         else
         {
             anim.SetBool("isShooting", false);
+            anim.SetBool("shootLeft", false);
         }
 
         i++;
@@ -112,4 +112,33 @@ public class shootBullet : MonoBehaviour {
        
 
     }
+
+    IEnumerator shootRight()
+    {
+        // Do something
+        yield return new WaitForSeconds(.2f);
+        x = transform.position.x - bulletXModifier;
+        y = (transform.position.y - bulletYModifier);
+        spawnSpot = new Vector3(x, y);
+        // Instantiate the projectile at the position and rotation of this transform
+        GameObject clone = Instantiate(projectile, spawnSpot, transform.rotation) as GameObject;
+        clone.GetComponent<Rigidbody2D>().velocity = new Vector2(-shootSpeed, GetComponent<Rigidbody2D>().velocity.y);
+        yield break;
+    }
+
+    IEnumerator shootLeft()
+    {
+        // Do something
+        yield return new WaitForSeconds(.2f);
+        x = transform.position.x + bulletXModifier;
+        y = (transform.position.y + bulletYModifier);
+        spawnSpot = new Vector3(x, y);
+        // Instantiate the projectile at the position and rotation of this transform
+        GameObject clone = Instantiate(projectile, spawnSpot, transform.rotation) as GameObject;
+        clone.GetComponent<Rigidbody2D>().velocity = new Vector2(shootSpeed, GetComponent<Rigidbody2D>().velocity.y);
+        yield break;
+    }
+
+
+
 }

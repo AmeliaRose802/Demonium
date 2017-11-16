@@ -7,8 +7,8 @@ public class endState : MonoBehaviour {
     public int health = 5;
     public GameObject canvas;
     public GameObject endLevel;
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
 		
 	}
 	
@@ -17,9 +17,9 @@ public class endState : MonoBehaviour {
 		if(health <= 0)
         {
             Destroy(this.gameObject);
-            Vector3 heartSpot = new Vector3(-33f, -33f);
-
-            GameObject clone = Instantiate(endLevel, heartSpot, transform.rotation, canvas.transform) as GameObject;
+            Vector3 winSpot = new Vector3(-40, -5);
+            SceneManager.LoadScene("winScene", LoadSceneMode.Single);
+           // GameObject clone = Instantiate(endLevel, winSpot, transform.rotation, canvas.transform) as GameObject;
 
             /*
             // get the current scene name 

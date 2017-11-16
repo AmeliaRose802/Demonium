@@ -84,6 +84,7 @@
     <Compile Include="Assets\scripts\endState.cs" />
     <Compile Include="Assets\scripts\health.cs" />
     <Compile Include="Assets\scripts\HealthManager.cs" />
+    <Compile Include="Assets\scripts\reload.cs" />
     <Compile Include="Assets\scripts\reloadOnFallOffScreen.cs" />
     <Compile Include="Assets\scripts\shootBullet.cs" />
     <Compile Include="Assets\scripts\takeDamage.cs" />

@@ -14,8 +14,10 @@ public class HealthManager : MonoBehaviour
     [HideInInspector] public Vector3 heartSpot;
     public float heartWidth = 1000f;
     public GameObject canvas;
-    public float threshold;
     public Vector2 spawnPoint;
+    public float threshold = -150f;
+
+    Vector2 innitalPosition;
 
     //Holds the heart game objects so they can be messed with
     public List<GameObject> hearts;
@@ -26,14 +28,42 @@ public class HealthManager : MonoBehaviour
     {
         //Draw a full amount of health
         drawHearts();
+        innitalPosition = gameObject.transform.position;
     }
 
+    private void Update()
+    {
+        if(threshold > gameObject.transform.position.y)
+        {
+            takeHealth();
+            healthCounter--;
+            gameObject.transform.position = innitalPosition;
+            Debug.Log("Threshold Exceeded");
+            Debug.Log(gameObject.transform.position.y);
+            Debug.Log(threshold);
+
+
+            //If player is out of health then kill player and reload scene
+            if (healthCounter <= 0)
+            {
+                Destroy(this.gameObject);
+                // get the current scene name 
+                string sceneName = SceneManager.GetActiveScene().name;
+
+                // load the same scene
+                SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
+            }
+        }
+
+    }
 
     //Draw the health number, probly going to take this out later
     void OnGUI()
     {
         GUI.Label(new Rect(10, 10, 100, 20), ("Health: " + healthCounter));
     }
+
+
 
     //Checks for collisons with enimy and manages health
     void OnCollisionEnter2D(Collision2D coll)

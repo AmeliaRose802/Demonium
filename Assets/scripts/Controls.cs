@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,6 +15,7 @@ public class Controls : MonoBehaviour {
     [HideInInspector] public static bool playerFacingLeft = false;
     Animator anim;
 
+
     // Use this for initialization
     void Start () {
         rb = GetComponent<Rigidbody2D>();
@@ -24,29 +26,33 @@ public class Controls : MonoBehaviour {
 	void Update () {
         float amountToMove = Input.GetAxisRaw("Horizontal") * moveSpeed * Time.deltaTime;
 
-        //TODO fix this shit so player will face the derection that it is shooting
-        if ((amountToMove < 0) && !playerFacingLeft)
+        
+   
+        if ((amountToMove < 0))
         {
+            anim.SetBool("walkLeft", true);
+            
+            /*
             Vector3 flip = gameObject.transform.localScale;
             flip.x *= -1;
             gameObject.transform.localScale = flip;
             playerFacingLeft = true;
+            */
         }
-        if(amountToMove > 0 && playerFacingLeft)
+        else if(amountToMove > 0)
         {
+            anim.SetBool("isWalking", true);
+            /*
             Vector3 flip = gameObject.transform.localScale;
             flip.x *= -1;
             gameObject.transform.localScale = flip;
             playerFacingLeft = false;
-        }
-
-        if(amountToMove != 0)
-        {
-            anim.SetBool("isWalking", true);
+            */
         }
         else
         {
             anim.SetBool("isWalking", false);
+            anim.SetBool("walkLeft", false);
         }
 
         transform.Translate(Vector3.right * amountToMove);
